@@ -1,14 +1,9 @@
-# Use official Nginx image
-FROM nginx:latest
+FROM eclipse-temurin:21-jdk
 
-# Remove default nginx static files
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-# Copy your project files into nginx web folder
-COPY . /usr/share/nginx/html
+COPY . .
 
-# Expose nginx port
-EXPOSE 80
+RUN ./mvnw clean package -DskipTests
 
-# Start nginx in foreground
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["java", "-jar", "target/app.jar"]
